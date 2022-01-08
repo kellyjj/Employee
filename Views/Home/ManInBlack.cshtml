@@ -1,0 +1,17 @@
+@{
+    ViewData["Title"] = "The man in black";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    
+    <ul>
+        @for (int x=0;x<(int)ViewData["NumTimes"]! ;x++)
+        {
+            <li>
+                @ViewData["Message"] 
+            </li>
+        }
+    </ul>
+    <p>The man in black fled across the desert, and the gunslinger followed</p>
+</div>

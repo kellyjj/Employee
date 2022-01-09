@@ -48,7 +48,7 @@ public class HomeController : Controller
                             emp.EMPLOYEEID = sdr["EMPLOYEEID"].ToString();
                             emp.FNAME = sdr["FNAME"].ToString();
                             emp.LNAME = sdr["LNAME"].ToString();
-
+                            emp.EMPROLE = sdr["EMPROLE"].ToString();
                             emp.ISMANAGER = sdr["ISMANAGER"].ToString()=="Y";
 
                             emplist.Add(emp);                            

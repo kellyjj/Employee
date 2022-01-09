@@ -21,6 +21,9 @@
             <th>
                 ISMANAGER
             </th>
+            <th>
+                ROLES
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -38,6 +41,9 @@
                 @Html.DisplayFor(modelItem => a.LNAME)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => a.EMPROLE)
+            </td>
+           <td>
                 @Html.DisplayFor(modelItem => a.ISMANAGER)
             </td>
         </tr>

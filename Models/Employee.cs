@@ -9,7 +9,7 @@
             public string EMPLOYEEID {get; set;}
             public string FNAME {get; set;}
             public string LNAME {get; set;}
-            //public List<EMPROLES> EMPROLE {get; set;}
+            public string EMPROLE {get; set;}
             public Boolean ISMANAGER {get;set;}
 
             public Employee()

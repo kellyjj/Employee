@@ -1,0 +1,47 @@
+@model List<Employee> 
+@{
+    ViewData["Title"] = "View All Employees";
+}
+<p>
+    <a asp-action="Create">Employee View</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                EMPLOYEEID
+            </th>
+            <th>
+                FNAME
+            </th>
+            <th>
+                LNAME
+            </th>
+            <th>
+                ISMANAGER
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var a in Model) 
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => a.EMPLOYEEID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => a.FNAME)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => a.LNAME)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => a.ISMANAGER)
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+

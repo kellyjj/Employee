@@ -17,7 +17,22 @@ public class HomeController : Controller
         _logger = logger;
     }
 
+    #region Misc
+    public IActionResult Index()
+    {
+        return View();
+    }
 
+    public IActionResult Privacy()
+    {
+        return View();
+    }
+
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
     public IActionResult ManInBlack(string myname,int numtimes)
     {
         ViewData["Message"] = "Hello " + myname;
@@ -25,8 +40,10 @@ public class HomeController : Controller
 
         return View();
     }
+    #endregion
 
-    public IActionResult ViewAllEmployee(string myname,int numtimes)
+#region  ViewTheEMployees
+    public IActionResult ViewAllEmployee()
     {
         List<Employee.Models.Employee> emplist = new List<Models.Employee>();
         try
@@ -69,20 +86,21 @@ public class HomeController : Controller
         return View(emplist);
     }
 
+#endregion
 
-    public IActionResult Index()
+#region CreateEmps
+    [HttpGet]
+    public IActionResult CreateEmployee()
     {
         return View();
     }
 
-    public IActionResult Privacy()
+    [HttpPost]
+    public IActionResult CreateEmployee(Models.Employee theemp)
     {
         return View();
     }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
+#endregion
+
 }

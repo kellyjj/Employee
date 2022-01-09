@@ -128,6 +128,39 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult CreateEmp(Models.Employee theemp)
+    {
+        try
+        {
+            string isManager = (theemp.ISMANAGER ?"Y":"N");
+            string query = string.Format("insert into dbo.EMPLOYEE (EMPLOYEEID,FNAME,LNAME,ISMANAGER,EMPROLE) values ('{0}','{1}','{2}','{3}','{4}')",
+                                            theemp.EMPLOYEEID,theemp.FNAME,theemp.LNAME,isManager,theemp.EMPROLE);
+
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                using (SqlCommand cmd = new SqlCommand(query))
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                    int sdr = cmd.ExecuteNonQuery();
+
+                    int a = sdr;
+                }
+
+                
+            }
+
+
+        }
+        catch(Exception ex)
+        {
+            string err = ex.Message;
+        }
+
+        return View();
+    }
+
+  
     
 
 #endregion

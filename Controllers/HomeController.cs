@@ -165,4 +165,51 @@ public class HomeController : Controller
 
 #endregion
 
+#region Crews
+    public IActionResult BuildCrew()
+    {
+        List<Employee.Models.Employee> managerList = new List<Models.Employee>();
+
+        try
+        {
+
+
+           string query = "select * from dbo.EMPLOYEE where EMPLOYEEID <>' ' and ISMANAGER in ('Y')";
+            
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                using (SqlCommand cmd = new SqlCommand(query))
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                    using (SqlDataReader sdr = cmd.ExecuteReader())
+                    {
+                        while (sdr.Read())
+                        {
+                            Models.Employee emp = new Models.Employee();
+
+                            emp.EMPLOYEEID = sdr["EMPLOYEEID"].ToString();
+                            emp.FNAME = sdr["FNAME"].ToString();
+                            emp.LNAME = sdr["LNAME"].ToString();
+                            emp.EMPROLE = sdr["EMPROLE"].ToString();
+                            emp.ISMANAGER = sdr["ISMANAGER"].ToString()=="Y";
+
+                            managerList.Add(emp);                            
+                        }
+
+                    }
+                   con.Close();
+
+                }
+            }
+
+        }
+        catch (Exception ex )
+        {
+            string err = ex.Message;
+        }
+
+        return View(managerList);
+    }
+#endregion
 }

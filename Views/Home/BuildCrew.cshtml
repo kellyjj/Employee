@@ -1,0 +1,15 @@
+@using Employee.Models
+@model  List<Employee> 
+@{
+
+@{
+    ViewData["Title"] = "Build Crew ";
+}
+<p>
+    <a asp-action="Index">Home</a>
+</p>
+<p>
+@Html.DropDownListFor(modelitem =>  ,"Pick Manager")
+</p>
+
+

@@ -1,6 +1,6 @@
 @using Employee.Models
-@model  List<Employee> 
-@{
+@model  mgrList
+
 
 @{
     ViewData["Title"] = "Build Crew ";
@@ -9,7 +9,16 @@
     <a asp-action="Index">Home</a>
 </p>
 <p>
-@Html.DropDownListFor(modelitem =>  ,"Pick Manager")
+    <form asp-action="BuildCrew_push">
+        @Html.DropDownListFor(modelitem =>modelitem.EMPLOYEEID,Model.myddList,"Select Manager",new { @class = "custom-select" })
+
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn bg-primary" />  
+        </div> 
+    </form>
+</p>
+<p>
+
 </p>
 
 

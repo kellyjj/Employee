@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Employee.Models;
 using Microsoft.Data.SqlClient;
-
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 
 namespace Employee.Controllers;
@@ -166,15 +166,30 @@ public class HomeController : Controller
 #endregion
 
 #region Crews
-    public IActionResult BuildCrew()
-    {
-        List<Employee.Models.Employee> managerList = new List<Models.Employee>();
 
+    public IActionResult BuildCrew_push(Models.mgrList ml )
+    {
         try
         {
+            string ep = ml.EMPLOYEEID;
+            int a=0;
+        }
+        catch(Exception ex)
+        {
+            string err = ex.Message;
+        }
 
+        return View();
+    }
 
-           string query = "select * from dbo.EMPLOYEE where EMPLOYEEID <>' ' and ISMANAGER in ('Y')";
+    public IActionResult BuildCrew()
+    {
+        List<Employee.Models.Employee> empList = new List<Employee.Models.Employee>();
+
+        var mylist = new mgrList();
+        try
+        {
+            string query = "select * from dbo.EMPLOYEE where EMPLOYEEID <>' ' and ISMANAGER in ('Y')";
             
             using (SqlConnection con = new SqlConnection(constr))
             {
@@ -193,15 +208,15 @@ public class HomeController : Controller
                             emp.LNAME = sdr["LNAME"].ToString();
                             emp.EMPROLE = sdr["EMPROLE"].ToString();
                             emp.ISMANAGER = sdr["ISMANAGER"].ToString()=="Y";
-
-                            managerList.Add(emp);                            
+                            empList.Add(emp);
                         }
-
                     }
                    con.Close();
 
                 }
             }
+
+            mylist.myddList = new SelectList(empList,"EMPLOYEEID","EMPLOYEEID");
 
         }
         catch (Exception ex )
@@ -209,7 +224,7 @@ public class HomeController : Controller
             string err = ex.Message;
         }
 
-        return View(managerList);
+        return View(mylist);
     }
 #endregion
 }

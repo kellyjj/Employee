@@ -1,8 +1,15 @@
     using System;  
     using System.ComponentModel.DataAnnotations;  
-      
+    using Microsoft.AspNetCore.Mvc.Rendering;
+
     namespace Employee.Models  
     {  
+        public class mgrList
+        {
+            public string EMPLOYEEID {get; set;}
+            public SelectList myddList {get; set;}
+        }
+
         public class Employee
         {
             [Key]
@@ -11,7 +18,7 @@
             public string LNAME {get; set;}
             public string EMPROLE {get; set;}
             public Boolean ISMANAGER {get;set;}
-
+            
             public Employee()
             {
                 // EMPROLE = new List<EMPROLES>();

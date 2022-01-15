@@ -1,6 +1,6 @@
 @using Employee.Models
-@model  mgrList
-
+@using Microsoft.AspNetCore.WebUtilities;
+@model  mgrList;
 
 @{
     ViewData["Title"] = "Build Crew ";
@@ -11,6 +11,10 @@
 <p>
     <form asp-action="BuildCrew_push">
         @Html.DropDownListFor(modelitem =>modelitem.EMPLOYEEID,Model.myddList,"Select Manager",new { @class = "custom-select" })
+
+
+
+
 
         <div class="form-group">
             <input type="submit" value="Create" class="btn bg-primary" />  

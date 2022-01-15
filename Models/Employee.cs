@@ -8,6 +8,16 @@
         {
             public string EMPLOYEEID {get; set;}
             public SelectList myddList {get; set;}
+            public List<Employee> empsList = new List<Employee>();
+            public Employee emp {get; set;}
+
+
+
+            public mgrList()
+            {
+                EMPLOYEEID = string.Empty;
+                emp = new Employee();
+            }
         }
 
         public class Employee

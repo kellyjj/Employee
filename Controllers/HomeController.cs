@@ -7,10 +7,181 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Employee.Controllers;
 
+public class TheDB
+{
+    string constr = "Data Source=can-toi;Database=S_SQR_PERSONNEL;Trusted_Connection=True;MultipleActiveResultSets=true;Integrated Security=False;TrustServerCertificate=True;User Id=sa;Password=Pepper!9";
+
+    public SelectList ReturnManagerDropList()
+    {
+       
+        List<Employee.Models.Employee > empList = new List<Employee.Models.Employee >();
+        try
+        {
+            string query = string.Format("select * from dbo.EMPLOYEE where EMPLOYEEID NOT in (' ') and ISMANAGER in ('Y')");
+            
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                using (SqlCommand cmd = new SqlCommand(query))
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                    using (SqlDataReader sdr = cmd.ExecuteReader())
+                    {
+                        while (sdr.Read())
+                        {
+                            Employee.Models.Employee emp = new Employee.Models.Employee ();
+                            emp.EMPLOYEEID = sdr["EMPLOYEEID"].ToString();
+
+                            empList.Add(emp);
+                        }
+                    }
+                   con.Close();
+
+                }
+            }
+
+           
+
+
+        }
+        catch (Exception ex )
+        {
+            string err = ex.Message;
+        }
+
+
+        return new SelectList(empList,"EMPLOYEEID","EMPLOYEEID");;
+    }
+
+    public List<Employee.Models.Employee> returnAllEmployee()
+    {
+        List<Employee.Models.Employee> emplist = new List<Models.Employee>();
+        try
+        {
+            string query = "select * from dbo.EMPLOYEE where EMPLOYEEID <>' '";
+            
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                using (SqlCommand cmd = new SqlCommand(query))
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                    using (SqlDataReader sdr = cmd.ExecuteReader())
+                    {
+                        while (sdr.Read())
+                        {
+                            Models.Employee emp = new Models.Employee();
+
+                            emp.EMPLOYEEID = sdr["EMPLOYEEID"].ToString();
+                            emp.FNAME = sdr["FNAME"].ToString();
+                            emp.LNAME = sdr["LNAME"].ToString();
+                            emp.EMPROLE = sdr["EMPROLE"].ToString();
+                            emp.ISMANAGER = sdr["ISMANAGER"].ToString()=="Y";
+
+                            emplist.Add(emp);                            
+                        }
+
+                    }
+ 
+                   con.Close();
+
+                }
+            }
+
+        }
+        catch (Exception ex)
+        {
+            string Error = ex.Message;
+        }
+
+        return emplist;
+    }
+
+
+    public Boolean CreateEmployee(Employee.Models.Employee theemp)
+    {
+        Boolean success = true;
+
+       try
+        {
+            string isManager = (theemp.ISMANAGER ?"Y":"N");
+            string query = string.Format("insert into dbo.EMPLOYEE (EMPLOYEEID,FNAME,LNAME,ISMANAGER,EMPROLE) values ('{0}','{1}','{2}','{3}','{4}')",
+                                            theemp.EMPLOYEEID,theemp.FNAME,theemp.LNAME,isManager,theemp.EMPROLE);
+
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                using (SqlCommand cmd = new SqlCommand(query))
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                    int sdr = cmd.ExecuteNonQuery();
+
+                    int a = sdr;
+                }
+
+                
+            }
+
+
+        }
+        catch(Exception ex)
+        {
+            string err = ex.Message;
+        }
+
+
+        return success;
+    }
+    // public List<mgrList> ReturnAllManager()
+    // {
+    //     List<mgrList> allmgr = new List<mgrList>();
+
+    //    try
+    //     {
+    //         string query = "select * from dbo.EMPLOYEE where EMPLOYEEID <>' ' and ISMANAGER in ('Y')";
+            
+    //         using (SqlConnection con = new SqlConnection(constr))
+    //         {
+    //             using (SqlCommand cmd = new SqlCommand(query))
+    //             {
+    //                 cmd.Connection = con;
+    //                 con.Open();
+    //                 using (SqlDataReader sdr = cmd.ExecuteReader())
+    //                 {
+    //                     while (sdr.Read())
+    //                     {
+    //                         Models.Employee emp = new Models.Employee();
+
+    //                         emp.EMPLOYEEID = sdr["EMPLOYEEID"].ToString();
+    //                         emp.FNAME = sdr["FNAME"].ToString();
+    //                         emp.LNAME = sdr["LNAME"].ToString();
+    //                         emp.EMPROLE = sdr["EMPROLE"].ToString();
+    //                         emp.ISMANAGER = sdr["ISMANAGER"].ToString()=="Y";
+    //                         empList.Add(emp);
+    //                     }
+    //                 }
+    //                con.Close();
+
+    //             }
+    //         }
+
+    //         mylist.myddList = new SelectList(empList,"EMPLOYEEID","EMPLOYEEID");
+
+    //     }
+    //     catch (Exception ex )
+    //     {
+    //         string err = ex.Message;
+    //     }
+
+
+    //     return allmgr;
+    // }
+
+}
+
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    string constr = "Data Source=can-toi;Database=S_SQR_PERSONNEL;Trusted_Connection=True;MultipleActiveResultSets=true;Integrated Security=False;TrustServerCertificate=True;User Id=sa;Password=Pepper!9";
 
     public HomeController(ILogger<HomeController> logger)
     {
@@ -48,34 +219,9 @@ public class HomeController : Controller
         List<Employee.Models.Employee> emplist = new List<Models.Employee>();
         try
         {
-            string query = "select * from dbo.EMPLOYEE where EMPLOYEEID <>' '";
-            
-            using (SqlConnection con = new SqlConnection(constr))
-            {
-                using (SqlCommand cmd = new SqlCommand(query))
-                {
-                    cmd.Connection = con;
-                    con.Open();
-                    using (SqlDataReader sdr = cmd.ExecuteReader())
-                    {
-                        while (sdr.Read())
-                        {
-                            Models.Employee emp = new Models.Employee();
+            TheDB db = new TheDB();
+            emplist = db.returnAllEmployee();
 
-                            emp.EMPLOYEEID = sdr["EMPLOYEEID"].ToString();
-                            emp.FNAME = sdr["FNAME"].ToString();
-                            emp.LNAME = sdr["LNAME"].ToString();
-                            emp.EMPROLE = sdr["EMPROLE"].ToString();
-                            emp.ISMANAGER = sdr["ISMANAGER"].ToString()=="Y";
-
-                            emplist.Add(emp);                            
-                        }
-
-                    }
-                   con.Close();
-
-                }
-            }
 
         }
         catch (Exception ex)
@@ -92,32 +238,36 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult Create()
     {
-        return View();
+        mgrList themgr = new mgrList();
+
+        try
+        {
+            TheDB db = new TheDB();
+
+            themgr.myddList = db.ReturnManagerDropList();
+
+
+        }
+        catch (Exception ex)
+        {
+            string err = ex.Message;
+        }
+
+        return View(themgr);
     }
 
     [HttpPost]
-    public IActionResult Create(Models.Employee theemp)
+    public IActionResult Create(Models.mgrList theemp)
     {
         try
         {
-            string isManager = (theemp.ISMANAGER ?"Y":"N");
-            string query = string.Format("insert into dbo.EMPLOYEE (EMPLOYEEID,FNAME,LNAME,ISMANAGER,EMPROLE) values ('{0}','{1}','{2}','{3}','{4}')",
-                                            theemp.EMPLOYEEID,theemp.FNAME,theemp.LNAME,isManager,theemp.EMPROLE);
 
-            using (SqlConnection con = new SqlConnection(constr))
-            {
-                using (SqlCommand cmd = new SqlCommand(query))
-                {
-                    cmd.Connection = con;
-                    con.Open();
-                    int sdr = cmd.ExecuteNonQuery();
+            TheDB db = new TheDB();
 
-                    int a = sdr;
-                }
+            db.CreateEmployee(theemp.emp);
 
-                
-            }
 
+            // theemp.myddList = db.ReturnManagerDropList();
 
         }
         catch(Exception ex)
@@ -125,37 +275,24 @@ public class HomeController : Controller
             string err = ex.Message;
         }
 
-        return View();
+        return View("Index");
     }
 
-    public IActionResult CreateEmp(Models.Employee theemp)
+    public IActionResult CreateEmp(Models.mgrList theemp)
     {
         try
         {
-            string isManager = (theemp.ISMANAGER ?"Y":"N");
-            string query = string.Format("insert into dbo.EMPLOYEE (EMPLOYEEID,FNAME,LNAME,ISMANAGER,EMPROLE) values ('{0}','{1}','{2}','{3}','{4}')",
-                                            theemp.EMPLOYEEID,theemp.FNAME,theemp.LNAME,isManager,theemp.EMPROLE);
 
-            using (SqlConnection con = new SqlConnection(constr))
-            {
-                using (SqlCommand cmd = new SqlCommand(query))
-                {
-                    cmd.Connection = con;
-                    con.Open();
-                    int sdr = cmd.ExecuteNonQuery();
+            TheDB db = new TheDB();
 
-                    int a = sdr;
-                }
-
-                
-            }
-
+            db.CreateEmployee(theemp.emp);
 
         }
         catch(Exception ex)
         {
             string err = ex.Message;
         }
+
 
         return View();
     }
@@ -189,34 +326,34 @@ public class HomeController : Controller
         var mylist = new mgrList();
         try
         {
-            string query = "select * from dbo.EMPLOYEE where EMPLOYEEID <>' ' and ISMANAGER in ('Y')";
+            // string query = "select * from dbo.EMPLOYEE where EMPLOYEEID <>' ' and ISMANAGER in ('Y')";
             
-            using (SqlConnection con = new SqlConnection(constr))
-            {
-                using (SqlCommand cmd = new SqlCommand(query))
-                {
-                    cmd.Connection = con;
-                    con.Open();
-                    using (SqlDataReader sdr = cmd.ExecuteReader())
-                    {
-                        while (sdr.Read())
-                        {
-                            Models.Employee emp = new Models.Employee();
+            // using (SqlConnection con = new SqlConnection(constr))
+            // {
+            //     using (SqlCommand cmd = new SqlCommand(query))
+            //     {
+            //         cmd.Connection = con;
+            //         con.Open();
+            //         using (SqlDataReader sdr = cmd.ExecuteReader())
+            //         {
+            //             while (sdr.Read())
+            //             {
+            //                 Models.Employee emp = new Models.Employee();
 
-                            emp.EMPLOYEEID = sdr["EMPLOYEEID"].ToString();
-                            emp.FNAME = sdr["FNAME"].ToString();
-                            emp.LNAME = sdr["LNAME"].ToString();
-                            emp.EMPROLE = sdr["EMPROLE"].ToString();
-                            emp.ISMANAGER = sdr["ISMANAGER"].ToString()=="Y";
-                            empList.Add(emp);
-                        }
-                    }
-                   con.Close();
+            //                 emp.EMPLOYEEID = sdr["EMPLOYEEID"].ToString();
+            //                 emp.FNAME = sdr["FNAME"].ToString();
+            //                 emp.LNAME = sdr["LNAME"].ToString();
+            //                 emp.EMPROLE = sdr["EMPROLE"].ToString();
+            //                 emp.ISMANAGER = sdr["ISMANAGER"].ToString()=="Y";
+            //                 empList.Add(emp);
+            //             }
+            //         }
+            //        con.Close();
 
-                }
-            }
+            //     }
+            // }
 
-            mylist.myddList = new SelectList(empList,"EMPLOYEEID","EMPLOYEEID");
+            // mylist.myddList = new SelectList(empList,"EMPLOYEEID","EMPLOYEEID");
 
         }
         catch (Exception ex )

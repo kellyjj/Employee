@@ -1,0 +1,58 @@
+@model mgrList
+@{
+    ViewData["Title"] = "View All Employees";
+}
+<p>
+    <a asp-action="Index">Home</a>
+</p>
+
+<div>
+Manager: @Model.EMPLOYEEID;
+
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                EMPLOYEEID
+            </th>
+            <th>
+                FNAME
+            </th>
+            <th>
+                LNAME
+            </th>
+            <th>
+                ISMANAGER
+            </th>
+            <th>
+                ROLES
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var a in Model.empsList) 
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => a.EMPLOYEEID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => a.FNAME)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => a.LNAME)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => a.ISMANAGER)
+            </td>
+           <td>
+                @Html.DisplayFor(modelItem => a.EMPROLE)
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+

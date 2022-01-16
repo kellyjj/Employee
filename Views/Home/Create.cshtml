@@ -1,7 +1,7 @@
 @model mgrList
 
 @{
-    ViewData["Title"] = "EmployeeCreate";
+    ViewData["Title"] = "Employee Create";
 }
 
 <h1>EmployeeCreate</h1>
@@ -16,7 +16,7 @@
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="emp.EMPLOYEEID" class="control-label"></label>
+                <label asp-for="emp.EMPLOYEEID" class="control-label">Employee ID</label>
                 <input asp-for="emp.EMPLOYEEID" class="form-control" />
                 <span asp-validation-for="emp.EMPLOYEEID" class="text-danger"></span>
             </div>
@@ -29,6 +29,11 @@
                 <label asp-for="emp.LNAME" class="control-label"></label>
                 <input asp-for="emp.LNAME" class="form-control" />
                 <span asp-validation-for="emp.LNAME" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="emp.EMPROLE" class="control-label"></label>
+                <input asp-for="emp.EMPROLE" class="form-control" />
+                <span asp-validation-for="emp.EMPROLE" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">

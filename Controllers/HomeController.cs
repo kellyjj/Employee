@@ -53,6 +53,51 @@ public class TheDB
         return new SelectList(empList,"EMPLOYEEID","EMPLOYEEID");;
     }
 
+   public List<Employee.Models.Employee> returnCrewAllEmployee(string mgr_empid)
+    {
+        List<Employee.Models.Employee> emplist = new List<Models.Employee>();
+        try
+        {
+            string query = string.Format("select * from dbo.EMPLOYEE a INNER JOIN dbo.CREW b on b.CREWEMP = a.EMPLOYEEID where b.MANAGER IN ('{0}') ",mgr_empid);
+            
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                using (SqlCommand cmd = new SqlCommand(query))
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                    using (SqlDataReader sdr = cmd.ExecuteReader())
+                    {
+                        while (sdr.Read())
+                        {
+                            Models.Employee emp = new Models.Employee();
+
+                            emp.EMPLOYEEID = sdr["EMPLOYEEID"].ToString();
+                            emp.FNAME = sdr["FNAME"].ToString();
+                            emp.LNAME = sdr["LNAME"].ToString();
+                            emp.EMPROLE = sdr["EMPROLE"].ToString();
+                            emp.ISMANAGER = sdr["ISMANAGER"].ToString()=="Y";
+
+                            emplist.Add(emp);                            
+                        }
+
+                    }
+ 
+                   con.Close();
+
+                }
+            }
+
+        }
+        catch (Exception ex)
+        {
+            string Error = ex.Message;
+        }
+
+        return emplist;
+    }
+
+ 
     public List<Employee.Models.Employee> returnAllEmployee()
     {
         List<Employee.Models.Employee> emplist = new List<Models.Employee>();
@@ -97,6 +142,39 @@ public class TheDB
         return emplist;
     }
 
+    public Boolean CreateCrew(string mgr_empid, string empid)
+    {
+        Boolean success = true;
+        
+      try
+        {
+            string query = string.Format("insert into dbo.CREW (MANAGER,CREWEMP) values ('{0}','{1}')",mgr_empid,empid);
+
+
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                using (SqlCommand cmd = new SqlCommand(query))
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                    int sdr = cmd.ExecuteNonQuery();
+
+                    int a = sdr;
+                }
+
+                
+            }
+
+
+        }
+        catch(Exception ex)
+        {
+            string err = ex.Message;
+        }
+
+
+        return success;
+    }
 
     public Boolean CreateEmployee(Employee.Models.Employee theemp)
     {
@@ -214,6 +292,61 @@ public class HomeController : Controller
     #endregion
 
 #region  ViewTheEMployees
+
+    [HttpGet]
+    public IActionResult ViewCrew()
+    {
+        mgrList themgr = new mgrList();
+        try
+        {
+            TheDB db = new TheDB();
+            themgr.myddList = db.ReturnManagerDropList();
+
+        }
+        catch(Exception ex)
+        {
+            string err = ex.Message;
+        }
+
+        return View(themgr);
+    }
+
+//    [HttpGet]
+    // public IActionResult VewCrewLoaded(Models.mgrList theemp)
+    // {
+    //     mgrList themgr = new mgrList();
+    //     try
+    //     {
+    //         TheDB db = new TheDB();
+ 
+    //     }
+    //     catch(Exception ex)
+    //     {
+    //         string err = ex.Message;
+    //     }
+
+    //     return View(theemp);
+    // }
+
+   [HttpPost]
+    public IActionResult ViewCrew(Models.mgrList theemp)
+    {
+        mgrList themgr = new mgrList();
+        try
+        {
+            TheDB db = new TheDB();
+
+            theemp.empsList = db.returnCrewAllEmployee(theemp.EMPLOYEEID);
+
+        }
+        catch(Exception ex)
+        {
+            string err = ex.Message;
+        }
+
+        return View("ViewCrewLoaded",theemp);
+    }
+
     public IActionResult ViewAllEmployee()
     {
         List<Employee.Models.Employee> emplist = new List<Models.Employee>();
@@ -264,8 +397,13 @@ public class HomeController : Controller
 
             TheDB db = new TheDB();
 
+
             db.CreateEmployee(theemp.emp);
 
+            if (!string.IsNullOrEmpty(theemp.EMPLOYEEID.Trim()))
+            {
+                db.CreateCrew(theemp.EMPLOYEEID,theemp.emp.EMPLOYEEID);
+            }
 
             // theemp.myddList = db.ReturnManagerDropList();
 
@@ -278,24 +416,6 @@ public class HomeController : Controller
         return View("Index");
     }
 
-    public IActionResult CreateEmp(Models.mgrList theemp)
-    {
-        try
-        {
-
-            TheDB db = new TheDB();
-
-            db.CreateEmployee(theemp.emp);
-
-        }
-        catch(Exception ex)
-        {
-            string err = ex.Message;
-        }
-
-
-        return View();
-    }
 
   
     

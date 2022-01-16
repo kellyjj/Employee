@@ -1,0 +1,30 @@
+@model mgrList
+
+@{
+    ViewData["Title"] = "View Crew";
+}
+
+<h1>EmployeeCreate</h1>
+
+<h4>Employee</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ViewCrew">
+
+            @Html.DropDownListFor(modelitem =>modelitem.EMPLOYEEID,Model.myddList,"Select Manager",new { @class = "custom-select" })
+
+           <div class="form-group">
+    
+                <input type="submit" value="ViewCrew" class="btn bg-primary" />  
+  
+            </div> 
+            
+        </form>
+    </div>
+</div>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+

@@ -9,11 +9,14 @@ namespace Employee.Controllers;
 
 public class TheDB
 {
+    /*  this class will do the db work for what ever it is we are pulling back.
+    */
     string constr = "Data Source=can-toi;Database=S_SQR_PERSONNEL;Trusted_Connection=True;MultipleActiveResultSets=true;Integrated Security=False;TrustServerCertificate=True;User Id=sa;Password=Pepper!9";
 
     public SelectList ReturnManagerDropList()
     {
-       
+       /*  this gets all managers
+       */
         List<Employee.Models.Employee > empList = new List<Employee.Models.Employee >();
         try
         {
@@ -55,6 +58,8 @@ public class TheDB
 
    public List<Employee.Models.Employee> returnCrewAllEmployee(string mgr_empid)
     {
+        /*  this goes and gets all the employees assigned to a manager
+        */
         List<Employee.Models.Employee> emplist = new List<Models.Employee>();
         try
         {
@@ -100,6 +105,8 @@ public class TheDB
  
     public List<Employee.Models.Employee> returnAllEmployee()
     {
+        /* grabs ll employees
+        */
         List<Employee.Models.Employee> emplist = new List<Models.Employee>();
         try
         {
@@ -144,6 +151,8 @@ public class TheDB
 
     public Boolean CreateCrew(string mgr_empid, string empid)
     {
+        /*  does the insert into crew table
+        */ 
         Boolean success = true;
         
       try
@@ -210,51 +219,7 @@ public class TheDB
 
         return success;
     }
-    // public List<mgrList> ReturnAllManager()
-    // {
-    //     List<mgrList> allmgr = new List<mgrList>();
-
-    //    try
-    //     {
-    //         string query = "select * from dbo.EMPLOYEE where EMPLOYEEID <>' ' and ISMANAGER in ('Y')";
-            
-    //         using (SqlConnection con = new SqlConnection(constr))
-    //         {
-    //             using (SqlCommand cmd = new SqlCommand(query))
-    //             {
-    //                 cmd.Connection = con;
-    //                 con.Open();
-    //                 using (SqlDataReader sdr = cmd.ExecuteReader())
-    //                 {
-    //                     while (sdr.Read())
-    //                     {
-    //                         Models.Employee emp = new Models.Employee();
-
-    //                         emp.EMPLOYEEID = sdr["EMPLOYEEID"].ToString();
-    //                         emp.FNAME = sdr["FNAME"].ToString();
-    //                         emp.LNAME = sdr["LNAME"].ToString();
-    //                         emp.EMPROLE = sdr["EMPROLE"].ToString();
-    //                         emp.ISMANAGER = sdr["ISMANAGER"].ToString()=="Y";
-    //                         empList.Add(emp);
-    //                     }
-    //                 }
-    //                con.Close();
-
-    //             }
-    //         }
-
-    //         mylist.myddList = new SelectList(empList,"EMPLOYEEID","EMPLOYEEID");
-
-    //     }
-    //     catch (Exception ex )
-    //     {
-    //         string err = ex.Message;
-    //     }
-
-
-    //     return allmgr;
-    // }
-
+ 
 }
 
 public class HomeController : Controller
@@ -296,6 +261,8 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult ViewCrew()
     {
+        /* intial entry point when viewing a crew assigned to a manager
+        */
         mgrList themgr = new mgrList();
         try
         {
@@ -312,27 +279,11 @@ public class HomeController : Controller
     }
 
     
-
-//    [HttpGet]
-    // public IActionResult VewCrewLoaded(Models.mgrList theemp)
-    // {
-    //     mgrList themgr = new mgrList();
-    //     try
-    //     {
-    //         TheDB db = new TheDB();
- 
-    //     }
-    //     catch(Exception ex)
-    //     {
-    //         string err = ex.Message;
-    //     }
-
-    //     return View(theemp);
-    // }
-
    [HttpPost]
     public IActionResult ViewCrew(Models.mgrList theemp)
     {
+        /*  entry point for when we have a manager and their crew ready to display
+        */
         mgrList themgr = new mgrList();
         try
         {
@@ -351,6 +302,8 @@ public class HomeController : Controller
 
     public IActionResult ViewAllEmployee()
     {
+        /*  entry point for when we are viewing all employees
+        */
         List<Employee.Models.Employee> emplist = new List<Models.Employee>();
         try
         {
@@ -373,6 +326,8 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult Create()
     {
+        /*  initial entry point for when we are adding a employee
+        */
         mgrList themgr = new mgrList();
 
         try
@@ -394,6 +349,7 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult Create(Models.mgrList theemp)
     {
+        /* 2nd entry point on return from page */
         try
         {
 
@@ -428,6 +384,8 @@ public class HomeController : Controller
 
     public IActionResult BuildCrew_push(Models.mgrList ml )
     {
+        /* abandonded   may add to this later.  a way to add employess to a mangager without craeating a employee woud be much better
+        */
         try
         {
             string ep = ml.EMPLOYEEID;
@@ -443,6 +401,7 @@ public class HomeController : Controller
 
     public IActionResult BuildCrew()
     {
+        /* adbandned may add to this later.  a way to add employess to a mangager without craeating a employee woud be much better*/
         List<Employee.Models.Employee> empList = new List<Employee.Models.Employee>();
 
         var mylist = new mgrList();

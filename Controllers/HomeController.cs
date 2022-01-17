@@ -311,6 +311,8 @@ public class HomeController : Controller
         return View(themgr);
     }
 
+    
+
 //    [HttpGet]
     // public IActionResult VewCrewLoaded(Models.mgrList theemp)
     // {

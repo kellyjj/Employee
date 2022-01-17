@@ -1,10 +1,39 @@
 # Employee
 
+
 this repo is my attempt at doing a mvc web app on linux mint , using vs code.   I am going to try to maintain a employee db.  
 
 
 script to create test db on sql server
 -----------------
+ENVIROMENT:  MINT linux 20 
+
+Work done in VS Code. 
+
+Db is sql server, created in Azuer data studion
+
+These dotnet cmds set up my mvc app to be able work with EF EntityFrameworkCore and a sql server db.  NOte:  they dont' actually 
+anthing but install the needed refreences in my machine (global)
+
+this will also allow me to do CRUD [Create, Read, Update, and Delete (CRUD) ]
+
+dotnet tool uninstall -g dotnet-aspnet-codegenerator
+dotnet tool install -g dotnet-aspnet-codegenerator
+dotnet tool uninstall -g dotnet-ef
+dotnet tool install --global dotnet-ef
+dotnet add package Microsoft.EntityFrameworkCore.Design
+dotnet add package Microsoft.EntityFrameworkCore.SQLite
+dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+
+// this will generate the controller as a part of the crud.  if we wanted to use sql lite add flag -sqlite
+dotnet-aspnet-codegenerator controller -name EmployeeController -m Employee -dc EmployeeContext --relativeFolderPath Controllers --useDefaultLayout --referenceScriptLibraries 
+
+
+
+
+
+------------------
 Create new DB called S_SQR_PERSONNEL
 
 run the following table scripts

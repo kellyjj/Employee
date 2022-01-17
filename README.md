@@ -1,17 +1,80 @@
 # Employee
 
-this is my 1st .net core mvc app.   I did not use the entity frame work.    this is a excercise in learning.
+this repo is my attempt at doing a mvc web app on linux mint , using vs code.   I am going to try to maintain a employee db.  
 
-it's a simple app that so far, that either adds a employee or shows all the employees.
 
-some dependicies:
+script to create test db on sql server
+-----------------
+Create new DB called S_SQR_PERSONNEL
 
-  this was written in vs code
-  developed on Linux Mint 20.2 Uma
-  sql server database.
-  dotnet add package Microsoft.EntityFrameworkCore.Design
-  dotnet add package Microsoft.EntityFrameworkCore.SQLite
-  dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
-  dotnet add package Microsoft.EntityFrameworkCore.SqlServer
-  
-  
+run the following table scripts
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[EMPLOYEE](
+	[EMPLOYEEID] [nvarchar](50) NOT NULL,
+	[FNAME] [nvarchar](50) NOT NULL,
+	[EMPROLE] [nvarchar](50) NOT NULL,
+	[ISMANAGER] [nvarchar](1) NOT NULL,
+	[LNAME] [nvarchar](50) NOT NULL
+) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+ALTER TABLE [dbo].[EMPLOYEE] ADD PRIMARY KEY CLUSTERED 
+(
+	[EMPLOYEEID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[CREW](
+	[CREWKEY] [int] IDENTITY(100,1) NOT NULL,
+	[MANAGER] [nvarchar](50) NOT NULL,
+	[CREWEMP] [nvarchar](50) NOT NULL
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[CREW] ADD PRIMARY KEY CLUSTERED 
+(
+	[CREWKEY] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[CREW]  WITH CHECK ADD  CONSTRAINT [FK_CREW] FOREIGN KEY([CREWEMP])
+REFERENCES [dbo].[EMPLOYEE] ([EMPLOYEEID])
+GO
+ALTER TABLE [dbo].[CREW] CHECK CONSTRAINT [FK_CREW]
+GO
+ALTER TABLE [dbo].[CREW]  WITH CHECK ADD  CONSTRAINT [FK_manager] FOREIGN KEY([MANAGER])
+REFERENCES [dbo].[EMPLOYEE] ([EMPLOYEEID])
+GO
+ALTER TABLE [dbo].[CREW] CHECK CONSTRAINT [FK_manager]
+GO
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[EMPROLES](
+	[CODE] [nvarchar](50) NOT NULL,
+	[DESCRIPTION] [nvarchar](50) NOT NULL
+) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+ALTER TABLE [dbo].[EMPROLES] ADD PRIMARY KEY CLUSTERED 
+(
+	[CODE] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+
+
+
+------------------

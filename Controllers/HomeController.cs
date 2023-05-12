@@ -355,7 +355,6 @@ public class HomeController : Controller
 
             TheDB db = new TheDB();
 
-
             db.CreateEmployee(theemp.emp);
 
             if (!string.IsNullOrEmpty(theemp.EMPLOYEEID.Trim()))
